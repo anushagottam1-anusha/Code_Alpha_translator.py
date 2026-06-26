@@ -1,0 +1,245 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMj4jXCm+yw1deTFOlSwAjT",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/anushagottam1-anusha/Code_Alpha_translator.py/blob/main/translator_project.ipy\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install gradio deep-translator gtts"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "hcCmaOaAx7cU",
+        "outputId": "f47f2ae9-5a8a-458b-aa01-685794bf2c85"
+      },
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: gradio in /usr/local/lib/python3.12/dist-packages (5.50.0)\n",
+            "Requirement already satisfied: deep-translator in /usr/local/lib/python3.12/dist-packages (1.11.4)\n",
+            "Requirement already satisfied: gtts in /usr/local/lib/python3.12/dist-packages (2.5.4)\n",
+            "Requirement already satisfied: aiofiles<25.0,>=22.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (24.1.0)\n",
+            "Requirement already satisfied: anyio<5.0,>=3.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (4.13.0)\n",
+            "Requirement already satisfied: brotli>=1.1.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (1.2.0)\n",
+            "Requirement already satisfied: fastapi<1.0,>=0.115.2 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.136.3)\n",
+            "Requirement already satisfied: ffmpy in /usr/local/lib/python3.12/dist-packages (from gradio) (1.0.0)\n",
+            "Requirement already satisfied: gradio-client==1.14.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (1.14.0)\n",
+            "Requirement already satisfied: groovy~=0.1 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.1.2)\n",
+            "Requirement already satisfied: httpx<1.0,>=0.24.1 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.28.1)\n",
+            "Requirement already satisfied: huggingface-hub<2.0,>=0.33.5 in /usr/local/lib/python3.12/dist-packages (from gradio) (1.19.0)\n",
+            "Requirement already satisfied: jinja2<4.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (3.1.6)\n",
+            "Requirement already satisfied: markupsafe<4.0,>=2.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (3.0.3)\n",
+            "Requirement already satisfied: numpy<3.0,>=1.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (2.0.2)\n",
+            "Requirement already satisfied: orjson~=3.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (3.11.9)\n",
+            "Requirement already satisfied: packaging in /usr/local/lib/python3.12/dist-packages (from gradio) (26.2)\n",
+            "Requirement already satisfied: pandas<3.0,>=1.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (2.2.2)\n",
+            "Requirement already satisfied: pillow<12.0,>=8.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (11.3.0)\n",
+            "Requirement already satisfied: pydantic<=2.12.3,>=2.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (2.12.3)\n",
+            "Requirement already satisfied: pydub in /usr/local/lib/python3.12/dist-packages (from gradio) (0.25.1)\n",
+            "Requirement already satisfied: python-multipart>=0.0.18 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.0.32)\n",
+            "Requirement already satisfied: pyyaml<7.0,>=5.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (6.0.3)\n",
+            "Requirement already satisfied: ruff>=0.9.3 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.15.17)\n",
+            "Requirement already satisfied: safehttpx<0.2.0,>=0.1.6 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.1.7)\n",
+            "Requirement already satisfied: semantic-version~=2.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (2.10.0)\n",
+            "Requirement already satisfied: starlette<1.0,>=0.40.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.52.1)\n",
+            "Requirement already satisfied: tomlkit<0.14.0,>=0.12.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.13.3)\n",
+            "Requirement already satisfied: typer<1.0,>=0.12 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.25.1)\n",
+            "Requirement already satisfied: typing-extensions~=4.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (4.15.0)\n",
+            "Requirement already satisfied: uvicorn>=0.14.0 in /usr/local/lib/python3.12/dist-packages (from gradio) (0.49.0)\n",
+            "Requirement already satisfied: fsspec in /usr/local/lib/python3.12/dist-packages (from gradio-client==1.14.0->gradio) (2025.3.0)\n",
+            "Requirement already satisfied: websockets<16.0,>=13.0 in /usr/local/lib/python3.12/dist-packages (from gradio-client==1.14.0->gradio) (15.0.1)\n",
+            "Requirement already satisfied: beautifulsoup4<5.0.0,>=4.9.1 in /usr/local/lib/python3.12/dist-packages (from deep-translator) (4.13.5)\n",
+            "Requirement already satisfied: requests<3.0.0,>=2.23.0 in /usr/local/lib/python3.12/dist-packages (from deep-translator) (2.32.4)\n",
+            "Requirement already satisfied: click<8.2,>=7.1 in /usr/local/lib/python3.12/dist-packages (from gtts) (8.1.8)\n",
+            "Requirement already satisfied: idna>=2.8 in /usr/local/lib/python3.12/dist-packages (from anyio<5.0,>=3.0->gradio) (3.18)\n",
+            "Requirement already satisfied: soupsieve>1.2 in /usr/local/lib/python3.12/dist-packages (from beautifulsoup4<5.0.0,>=4.9.1->deep-translator) (2.8.4)\n",
+            "Requirement already satisfied: typing-inspection>=0.4.2 in /usr/local/lib/python3.12/dist-packages (from fastapi<1.0,>=0.115.2->gradio) (0.4.2)\n",
+            "Requirement already satisfied: annotated-doc>=0.0.2 in /usr/local/lib/python3.12/dist-packages (from fastapi<1.0,>=0.115.2->gradio) (0.0.4)\n",
+            "Requirement already satisfied: certifi in /usr/local/lib/python3.12/dist-packages (from httpx<1.0,>=0.24.1->gradio) (2026.5.20)\n",
+            "Requirement already satisfied: httpcore==1.* in /usr/local/lib/python3.12/dist-packages (from httpx<1.0,>=0.24.1->gradio) (1.0.9)\n",
+            "Requirement already satisfied: h11>=0.16 in /usr/local/lib/python3.12/dist-packages (from httpcore==1.*->httpx<1.0,>=0.24.1->gradio) (0.16.0)\n",
+            "INFO: pip is looking at multiple versions of huggingface-hub to determine which version is compatible with other requirements. This could take a while.\n",
+            "Collecting huggingface-hub<2.0,>=0.33.5 (from gradio)\n",
+            "  Downloading huggingface_hub-1.21.0-py3-none-any.whl.metadata (14 kB)\n",
+            "  Downloading huggingface_hub-1.20.1-py3-none-any.whl.metadata (14 kB)\n",
+            "  Downloading huggingface_hub-1.20.0-py3-none-any.whl.metadata (14 kB)\n",
+            "  Downloading huggingface_hub-1.18.0-py3-none-any.whl.metadata (14 kB)\n",
+            "  Downloading huggingface_hub-1.17.0-py3-none-any.whl.metadata (14 kB)\n",
+            "  Downloading huggingface_hub-1.16.4-py3-none-any.whl.metadata (14 kB)\n",
+            "  Downloading huggingface_hub-1.16.1-py3-none-any.whl.metadata (14 kB)\n",
+            "Requirement already satisfied: filelock>=3.10.0 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub<2.0,>=0.33.5->gradio) (3.29.3)\n",
+            "Requirement already satisfied: hf-xet<2.0.0,>=1.4.3 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub<2.0,>=0.33.5->gradio) (1.5.1)\n",
+            "Requirement already satisfied: tqdm>=4.42.1 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub<2.0,>=0.33.5->gradio) (4.67.3)\n",
+            "Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.12/dist-packages (from pandas<3.0,>=1.0->gradio) (2.9.0.post0)\n",
+            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas<3.0,>=1.0->gradio) (2025.2)\n",
+            "Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas<3.0,>=1.0->gradio) (2026.2)\n",
+            "Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.12/dist-packages (from pydantic<=2.12.3,>=2.0->gradio) (0.7.0)\n",
+            "Requirement already satisfied: pydantic-core==2.41.4 in /usr/local/lib/python3.12/dist-packages (from pydantic<=2.12.3,>=2.0->gradio) (2.41.4)\n",
+            "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.12/dist-packages (from requests<3.0.0,>=2.23.0->deep-translator) (3.4.7)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests<3.0.0,>=2.23.0->deep-translator) (2.5.0)\n",
+            "INFO: pip is looking at multiple versions of typer to determine which version is compatible with other requirements. This could take a while.\n",
+            "Collecting typer<1.0,>=0.12 (from gradio)\n",
+            "  Downloading typer-0.26.8-py3-none-any.whl.metadata (15 kB)\n",
+            "Requirement already satisfied: shellingham>=1.3.0 in /usr/local/lib/python3.12/dist-packages (from typer<1.0,>=0.12->gradio) (1.5.4)\n",
+            "Requirement already satisfied: rich>=13.8.0 in /usr/local/lib/python3.12/dist-packages (from typer<1.0,>=0.12->gradio) (13.9.4)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.8.2->pandas<3.0,>=1.0->gradio) (1.17.0)\n",
+            "Requirement already satisfied: markdown-it-py>=2.2.0 in /usr/local/lib/python3.12/dist-packages (from rich>=13.8.0->typer<1.0,>=0.12->gradio) (4.2.0)\n",
+            "Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /usr/local/lib/python3.12/dist-packages (from rich>=13.8.0->typer<1.0,>=0.12->gradio) (2.20.0)\n",
+            "Requirement already satisfied: mdurl~=0.1 in /usr/local/lib/python3.12/dist-packages (from markdown-it-py>=2.2.0->rich>=13.8.0->typer<1.0,>=0.12->gradio) (0.1.2)\n",
+            "Downloading huggingface_hub-1.16.1-py3-none-any.whl (668 kB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m668.2/668.2 kB\u001b[0m \u001b[31m3.7 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hDownloading typer-0.26.8-py3-none-any.whl (122 kB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m122.6/122.6 kB\u001b[0m \u001b[31m9.4 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hInstalling collected packages: typer, huggingface-hub\n",
+            "  Attempting uninstall: typer\n",
+            "    Found existing installation: typer 0.25.1\n",
+            "    Uninstalling typer-0.25.1:\n",
+            "      Successfully uninstalled typer-0.25.1\n",
+            "  Attempting uninstall: huggingface-hub\n",
+            "    Found existing installation: huggingface_hub 1.19.0\n",
+            "    Uninstalling huggingface_hub-1.19.0:\n",
+            "      Successfully uninstalled huggingface_hub-1.19.0\n",
+            "Successfully installed huggingface-hub-1.16.1 typer-0.26.8\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install deep-translator gtts\n",
+        "import gradio as gr\n",
+        "from deep_translator import GoogleTranslator\n",
+        "from gtts import gTTS\n",
+        "\n",
+        "languages = {\n",
+        "    \"English\": \"en\",\n",
+        "    \"Telugu\": \"te\",\n",
+        "    \"Hindi\": \"hi\",\n",
+        "    \"Tamil\": \"ta\",\n",
+        "    \"Kannada\": \"kn\",\n",
+        "    \"Malayalam\": \"ml\",\n",
+        "    \"French\": \"fr\",\n",
+        "    \"German\": \"de\",\n",
+        "    \"Spanish\": \"es\"\n",
+        "}\n",
+        "\n",
+        "def translate_and_speak(text, source, target):\n",
+        "    try:\n",
+        "        translated = GoogleTranslator(\n",
+        "            source=languages[source],\n",
+        "            target=languages[target]\n",
+        "        ).translate(text)\n",
+        "\n",
+        "\n",
+        "        tts = gTTS(text=translated, lang=languages[target])\n",
+        "        audio_file = \"translation.mp3\"\n",
+        "        tts.save(audio_file)\n",
+        "\n",
+        "        return translated, audio_file\n",
+        "\n",
+        "    except Exception as e:\n",
+        "        return f\"Error: {e}\", None\n",
+        "\n",
+        "\n",
+        "demo = gr.Interface(\n",
+        "    fn=translate_and_speak,\n",
+        "    inputs=[\n",
+        "        gr.Textbox(lines=3, label=\"Enter Text\"),\n",
+        "        gr.Dropdown(list(languages.keys()), value=\"English\", label=\"Source Language\"),\n",
+        "        gr.Dropdown(list(languages.keys()), value=\"Telugu\", label=\"Target Language\"),\n",
+        "    ],\n",
+        "    outputs=[\n",
+        "        gr.Textbox(label=\"Translated Text\"),\n",
+        "        gr.Audio(label=\"🔊 Listen\", type=\"filepath\")\n",
+        "    ],\n",
+        "    title=\"🌍 universal Language Translation Tool\",\n",
+        "    description=\"Translate text into different languages and listen to the translated speech.\"\n",
+        ")\n",
+        "\n",
+        "demo.launch(share=True)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 802
+        },
+        "id": "vjmRTjP3x3MZ",
+        "outputId": "ac1ce419-4e35-4c63-e06d-c81c11571fa5"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: deep-translator in /usr/local/lib/python3.12/dist-packages (1.11.4)\n",
+            "Requirement already satisfied: gtts in /usr/local/lib/python3.12/dist-packages (2.5.4)\n",
+            "Requirement already satisfied: beautifulsoup4<5.0.0,>=4.9.1 in /usr/local/lib/python3.12/dist-packages (from deep-translator) (4.13.5)\n",
+            "Requirement already satisfied: requests<3.0.0,>=2.23.0 in /usr/local/lib/python3.12/dist-packages (from deep-translator) (2.32.4)\n",
+            "Requirement already satisfied: click<8.2,>=7.1 in /usr/local/lib/python3.12/dist-packages (from gtts) (8.1.8)\n",
+            "Requirement already satisfied: soupsieve>1.2 in /usr/local/lib/python3.12/dist-packages (from beautifulsoup4<5.0.0,>=4.9.1->deep-translator) (2.8.4)\n",
+            "Requirement already satisfied: typing-extensions>=4.0.0 in /usr/local/lib/python3.12/dist-packages (from beautifulsoup4<5.0.0,>=4.9.1->deep-translator) (4.15.0)\n",
+            "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.12/dist-packages (from requests<3.0.0,>=2.23.0->deep-translator) (3.4.7)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.12/dist-packages (from requests<3.0.0,>=2.23.0->deep-translator) (3.18)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests<3.0.0,>=2.23.0->deep-translator) (2.5.0)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.12/dist-packages (from requests<3.0.0,>=2.23.0->deep-translator) (2026.5.20)\n",
+            "Colab notebook detected. To show errors in colab notebook, set debug=True in launch()\n",
+            "* Running on public URL: https://8edded444d8fa233c1.gradio.live\n",
+            "\n",
+            "This share link expires in 1 week. For free permanent hosting and GPU upgrades, run `gradio deploy` from the terminal in the working directory to deploy to Hugging Face Spaces (https://huggingface.co/spaces)\n"
+          ]
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.HTML object>"
+            ],
+            "text/html": [
+              "<div><iframe src=\"https://8edded444d8fa233c1.gradio.live\" width=\"100%\" height=\"500\" allow=\"autoplay; camera; microphone; clipboard-read; clipboard-write;\" frameborder=\"0\" allowfullscreen></iframe></div>"
+            ]
+          },
+          "metadata": {}
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": []
+          },
+          "metadata": {},
+          "execution_count": 3
+        }
+      ]
+    }
+  ]
+}
